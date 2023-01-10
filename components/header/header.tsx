@@ -16,6 +16,9 @@ export default function Header() {
         <ActiveLink href="/users" activeClassName="font-bold">
           {/* {t("user")} */}Users
         </ActiveLink>
+        <ActiveLink href="/posts" activeClassName="font-bold">
+          {/* {t("user")} */}Posts
+        </ActiveLink>
       </nav>
       {/* <div className="text-white">{isFetching ? "Loading..." : ""}</div> */}
       <div className="text-white grid items-center justify-items-center grid-flow-col gap-2">
