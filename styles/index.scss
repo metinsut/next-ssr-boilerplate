@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "./typography.scss";
+@import "./loader.scss";
+@import "./text-input.scss";

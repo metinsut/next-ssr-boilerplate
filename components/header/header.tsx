@@ -1,13 +1,18 @@
 import Link from "next/link";
 import React from "react";
 import ActiveLink from "../next/active-link";
+import { signIn } from "next-auth/react";
 
 export default function Header() {
   const handleLanguageChange = (language: string) => {};
 
+  const handleSignIn = () => {
+    signIn();
+  };
+
   return (
     <header className="grid grid-flow-col p-4 bg-purple-600 justify-between items-center sticky top-0 w-full left-0">
-      <nav className="flex gap-4 text-white">
+      <nav className="grid grid-flow-col gap-4 text-white">
         {/* <Link href="/home" activeProps={() => ({ className: "font-bold" })}> */}
         <ActiveLink activeClassName="font-bold" href="/">
           {/* {t("home")} */}Home
@@ -17,7 +22,10 @@ export default function Header() {
           {/* {t("user")} */}Users
         </ActiveLink>
         <ActiveLink href="/posts" activeClassName="font-bold">
-          {/* {t("user")} */}Posts
+          Posts
+        </ActiveLink>
+        <ActiveLink href="/posts/comments" activeClassName="font-bold">
+          Comments
         </ActiveLink>
       </nav>
       {/* <div className="text-white">{isFetching ? "Loading..." : ""}</div> */}
@@ -32,6 +40,13 @@ export default function Header() {
         >
           My Profile
         </Link>
+        <Link
+          href="/auth/signin"
+          className="p-1 border border-solid border-purple-400 rounded-lg"
+        >
+          Sign In
+        </Link>
+        <button onClick={handleSignIn}>Sign In 2</button>
       </div>
     </header>
   );

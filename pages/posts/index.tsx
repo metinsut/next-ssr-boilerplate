@@ -23,6 +23,7 @@ type Props = {
 export default function Posts({ posts }: Props) {
   return (
     <div className="p-4">
+      <h1>Static Site Render</h1>
       <div className="grid gap-2">
         {posts.map((post) => (
           <Link href={"posts/" + post.id.toString()} key={post.id}>
