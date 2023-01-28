@@ -1,32 +1,34 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import zod, { z } from "zod";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import TextInput from "../../components/inputs/textInput";
-
-export const schema = zod.object({
-  password: zod.string().min(6),
-  email: zod.string().email(),
-});
-
-export type TRegister = z.infer<typeof schema>;
+import { signIn } from "next-auth/react";
+import { authSchema, TRegister } from "../../schema/auth";
 
 export default function Login() {
   const router = useRouter();
-
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any[]>([]);
 
-  const { register, handleSubmit, control, watch } = useForm<TRegister>({
-    resolver: zodResolver(schema),
+  const { register, handleSubmit, control } = useForm<TRegister>({
+    resolver: zodResolver(authSchema),
   });
 
-  const email = watch("email");
+  const handleLogin: SubmitHandler<TRegister> = async (formValues) => {
+    const status = await signIn("credentials", {
+      email: formValues.email,
+      password: formValues.password,
+      callbackUrl: (router.query?.callbackUrl as string) || "/",
+      redirect: false,
+    });
 
-  const handleLogin: SubmitHandler<TRegister> = async (formValues) => {};
+    if (status?.ok) {
+      router.push(status?.url as string);
+    }
+  };
 
   const handleSendMagicLink = async () => {};
 

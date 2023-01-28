@@ -2,12 +2,14 @@ import "../styles/index.scss";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
+import NextNProgress from "nextjs-progressbar";
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-type AppPropsWithLayout = AppProps & {
+export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
@@ -22,7 +24,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Component {...pageProps} />
+      <SessionProvider session={pageProps.session}>
+        <NextNProgress options={{ showSpinner: false }} />
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   );
 }

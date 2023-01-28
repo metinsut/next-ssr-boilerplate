@@ -27,6 +27,9 @@ export default function Header() {
         <ActiveLink href="/posts/comments" activeClassName="font-bold">
           Comments
         </ActiveLink>
+        <ActiveLink href="/protected" activeClassName="font-bold">
+          Protected
+        </ActiveLink>
       </nav>
       {/* <div className="text-white">{isFetching ? "Loading..." : ""}</div> */}
       <div className="text-white grid items-center justify-items-center grid-flow-col gap-2">
@@ -40,13 +43,7 @@ export default function Header() {
         >
           My Profile
         </Link>
-        <Link
-          href="/auth/signin"
-          className="p-1 border border-solid border-purple-400 rounded-lg"
-        >
-          Sign In
-        </Link>
-        <button onClick={handleSignIn}>Sign In 2</button>
+        <button onClick={handleSignIn}>Sign In</button>
       </div>
     </header>
   );

@@ -1,48 +1,48 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const authOptions: NextAuthOptions = {
+const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
   providers: [
     CredentialsProvider({
       type: "credentials",
-      credentials: {},
-      authorize(credentials, req) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        // perform you login logic
-        // find out user from db
-        if (email !== "john@gmail.com" || password !== "1234") {
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (
+          credentials?.email !== "metindir@gmail.com" ||
+          credentials?.password !== "123456"
+        ) {
           throw new Error("invalid credentials");
         }
 
-        // if everything is fine
-        return {
+        const user = {
           id: "1234",
-          name: "John Doe",
-          email: "john@gmail.com",
+          name: "Metin Süt",
+          email: "metindir@gmail.com",
+          token: "myToken12345",
           role: "admin",
         };
+
+        return user;
       },
     }),
   ],
   pages: {
     signIn: "/auth/signin",
-    // error: '/auth/error',
-    // signOut: '/auth/signout'
   },
+  secret: process.env.AUTH_SECRET,
   callbacks: {
-    jwt(params) {
-      // update token
-      if (params.user?.role) {
-        params.token.role = params.user.role;
-      }
-      // return final_token
-      return params.token;
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      session.user = token;
+      return session;
     },
   },
 };
